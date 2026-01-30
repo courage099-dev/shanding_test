@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山顶传记 - 您身边的传记专家</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans SC', sans-serif; }
+        .font-pingfang { font-family: 'PingFang SC', 'Noto Sans SC', sans-serif; }
+        
+        /* Smooth Scroll Behavior */
+        html { scroll-behavior: smooth; }
+        
+        /* Animation Utilities */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .slide-up { animation: slideUp 0.8s ease-out forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-enter { animation: modalEnter 0.3s ease-out forwards; }
+        .modal-leave { animation: modalLeave 0.3s ease-in forwards; }
+        
+        @keyframes modalEnter {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        @keyframes modalLeave {
+            from { opacity: 1; transform: scale(1) translateY(0); }
+            to { opacity: 0; transform: scale(0.95) translateY(20px); }
+        }
+
+        /* Checkbox Custom Style */
+        .custom-checkbox:checked + div {
+            background-color: #BC5834;
+            border-color: #BC5834;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-[#222222] bg-[#F0EEE5] min-h-screen selection:bg-[#BC5834] selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-[#F0EEE5]/90 backdrop-blur-md border-b border-[#E5E1D0] px-4 md:px-8 h-20 flex items-center justify-between">
+        <div class="flex items-center gap-4 cursor-pointer" onclick="scrollToSection('home')">
+            <!-- Logo SVG -->
+            <svg viewBox="0 0 600 240" class="h-10 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M37.9005 0C16.9225 0 0 17.5234 0 39.2523V205.924C0 224.249 14.3692 239.119 32.0427 239.119H192.256V172.73V0H37.9005ZM29.6395 105.441L53.3711 80.8577C58.3778 75.7009 64.7863 71.9459 71.7456 71.0447C81.3584 69.793 90.5707 73.0974 97.2796 80.0066L105.14 88.1675L109.446 83.7115C119.109 73.6982 134.88 73.6982 144.593 83.7115L165.571 105.441C168.074 108.044 168.074 112.3 165.571 114.853C163.067 117.457 159.012 117.457 156.559 114.853L135.581 93.1241C130.824 88.2676 123.214 88.2676 118.508 93.1241L114.202 97.58L143.241 127.67C145.744 130.274 145.744 134.429 143.241 137.033C140.738 139.636 136.682 139.636 134.179 137.033L88.1675 89.319C81.3083 82.2095 70.0934 82.2095 63.2342 89.319L38.7015 114.753C36.1982 117.356 32.1428 117.356 29.6395 114.753C27.1361 112.2 27.1361 107.994 29.6395 105.441ZM179.489 225.851H32.0927C21.5287 225.851 12.8671 216.889 12.8671 205.924C12.8671 194.96 21.5287 185.998 32.0927 185.998H179.489V225.851Z" fill="#C1603D" />
+                <g>
+                    <path d="M410.297 48.9155C415.755 49.5163 419.91 54.1224 419.91 59.6298V143.592C419.91 145.795 418.759 147.847 416.806 148.949C413.051 151.052 406.542 154.106 400.534 154.106H396.229V142.59H316.022L312.817 147.247C310.765 150.251 306.809 151.302 303.555 149.75L285.882 141.389L291.739 135.681V47.2132L305.758 48.8654C311.165 49.5163 315.271 54.1224 315.271 59.5797V134.78H343.408V13.5183L357.827 15.0704C363.285 15.6712 367.44 20.2773 367.44 25.7847V134.78H396.229V47.3634L410.297 48.9155Z" fill="#232323" />
+                    <path d="M578.071 12.0161C579.322 10.6142 581.425 10.3639 582.927 11.5154C586.932 14.5695 594.743 20.6276 600 25.2337C599.549 26.936 597.847 27.687 595.544 27.687H559.997C554.439 35.9981 547.38 45.0601 541.071 51.3685H567.056L573.915 44.0588C575.167 42.707 577.219 42.5568 578.721 43.6583L592.64 54.5728C592.64 54.5728 593.491 55.5742 592.239 56.5755C591.388 57.2764 590.237 58.1275 589.085 58.2777V116.756C588.935 118.007 578.922 122.013 572.013 122.013H568.458V58.5281H533.211V119.81C533.211 121.963 524.149 126.719 515.037 126.719H511.782V46.9126C511.782 44.8599 513.885 43.4079 515.788 44.1589L534.062 51.3685H536.065C536.215 44.9099 536.215 35.4974 536.215 27.687H513.735C514.987 28.7384 516.188 29.8399 517.29 30.9413C516.989 32.6436 515.287 33.3946 513.134 33.3946H494.96V131.525C494.96 145.244 491.706 154.906 469.726 156.459C469.576 149.7 468.975 144.593 467.123 141.539C465.12 138.485 462.517 135.981 455.257 134.78V132.927C455.257 132.927 467.573 133.528 470.627 133.528C472.78 133.528 473.381 132.427 473.381 130.774V33.3946H452.754L450.801 27.0862H490.604L500.617 18.2744C501.519 17.5234 502.82 17.5235 503.671 18.3245L512.333 26.3352L511.983 21.2284H569.86L578.071 12.0161ZM561.549 72.9974C561.198 84.6128 559.896 109.496 555.39 120.16C611.565 124.766 601.702 164.77 580.023 155.107C574.316 144.192 563.251 132.026 553.888 123.415C545.878 138.935 529.256 149.9 494.509 157.56L493.408 155.257C545.127 136.182 541.722 113.451 541.722 64.6863L555.591 66.1883C558.995 66.5388 561.649 69.4927 561.549 72.9974Z" fill="#232323" />
+                </g>
+                <g>
+                   <path d="M307.159 190.253V201.518H306.258C305.958 199.366 305.457 197.613 304.706 196.362C303.955 195.06 302.903 194.059 301.502 193.308C300.1 192.557 298.698 192.156 297.246 192.156C295.594 192.156 294.192 192.657 293.14 193.658C292.039 194.659 291.488 195.811 291.488 197.113C291.488 198.114 291.839 199.015 292.54 199.816C293.541 201.018 295.894 202.62 299.599 204.623C302.653 206.275 304.706 207.526 305.807 208.378C306.909 209.229 307.76 210.28 308.361 211.482C308.962 212.683 309.262 213.885 309.262 215.187C309.262 217.64 308.311 219.793 306.408 221.545C304.506 223.348 302.052 224.199 299.048 224.199C298.097 224.199 297.196 224.149 296.395 223.998C295.894 223.898 294.893 223.648 293.291 223.147C291.739 222.647 290.737 222.396 290.337 222.396C289.936 222.396 289.636 222.496 289.385 222.747C289.135 222.997 288.985 223.498 288.885 224.249H287.984V213.134H288.885C289.285 215.487 289.836 217.239 290.587 218.391C291.288 219.542 292.389 220.494 293.791 221.295C295.193 222.096 296.845 222.446 298.548 222.446C300.55 222.446 302.152 221.896 303.304 220.844C304.456 219.793 305.056 218.541 305.056 217.089C305.056 216.288 304.856 215.487 304.405 214.686C303.955 213.885 303.304 213.134 302.353 212.383C301.752 211.882 300 210.881 297.246 209.329C294.442 207.777 292.49 206.525 291.288 205.574C290.086 204.623 289.235 203.621 288.634 202.52C288.034 201.418 287.733 200.167 287.733 198.815C287.733 196.462 288.634 194.459 290.437 192.757C292.239 191.055 294.492 190.203 297.296 190.203C299.048 190.203 300.851 190.604 302.803 191.455C303.705 191.856 304.355 192.056 304.706 192.056C305.106 192.056 305.457 191.956 305.707 191.705C305.958 191.455 306.158 190.954 306.358 190.203H307.159V190.253Z" fill="#232323" />
+                   <path d="M359.028 191.856V190.955H370.543V191.856H369.342C368.04 191.856 367.088 192.406 366.388 193.458C366.037 193.959 365.887 195.11 365.887 196.912V210.13C365.887 213.384 365.587 215.938 364.936 217.74C364.285 219.543 363.033 221.095 361.131 222.396C359.228 223.698 356.675 224.349 353.37 224.349C349.816 224.349 347.112 223.748 345.259 222.497C343.407 221.245 342.105 219.593 341.354 217.54C340.854 216.138 340.603 213.435 340.603 209.529V196.812C340.603 194.81 340.303 193.508 339.752 192.857C339.201 192.256 338.3 191.906 337.099 191.906H335.897V191.005H349.966V191.906H348.714C347.362 191.906 346.411 192.306 345.81 193.157C345.41 193.758 345.209 194.96 345.209 196.762V210.931C345.209 212.183 345.31 213.635 345.56 215.287C345.81 216.939 346.211 218.191 346.812 219.092C347.412 219.993 348.313 220.744 349.415 221.345C350.566 221.946 351.968 222.246 353.621 222.246C355.773 222.246 357.676 221.796 359.328 220.844C360.98 219.893 362.132 218.742 362.783 217.29C363.384 215.838 363.684 213.384 363.684 209.93V196.762C363.684 194.71 363.484 193.458 363.033 192.957C362.432 192.256 361.481 191.906 360.229 191.906H359.028V191.856Z" fill="#232323" />
+                   <path d="M414.803 223.548L402.236 196.162V217.891C402.236 219.893 402.436 221.145 402.887 221.646C403.488 222.296 404.439 222.647 405.691 222.647H406.842V223.548H395.527V222.647H396.679C398.081 222.647 399.032 222.246 399.583 221.395C399.933 220.894 400.133 219.693 400.133 217.891V196.612C400.133 195.16 399.983 194.109 399.633 193.508C399.432 193.057 398.982 192.657 398.381 192.356C397.78 192.056 396.829 191.906 395.477 191.906V191.005H404.689L416.505 216.489L428.121 191.005H437.333V191.906H436.181C434.779 191.906 433.778 192.306 433.227 193.158C432.877 193.658 432.677 194.86 432.677 196.662V217.941C432.677 219.943 432.877 221.195 433.328 221.696C433.928 222.346 434.88 222.697 436.131 222.697H437.283V223.598H423.464V222.647H424.616C426.018 222.647 426.969 222.246 427.52 221.395C427.87 220.894 428.07 219.693 428.07 217.891V196.162L415.504 223.548H414.803Z" fill="#232323" />
+                   <path d="M482.142 223.548L469.576 196.162V217.891C469.576 219.893 469.776 221.145 470.226 221.646C470.827 222.296 471.778 222.647 473.03 222.647H474.182V223.548H462.867V222.647H464.018C465.42 222.647 466.371 222.246 466.922 221.395C467.272 220.894 467.473 219.693 467.473 217.891V196.612C467.473 195.16 467.323 194.109 466.972 193.508C466.772 193.057 466.321 192.657 465.72 192.356C465.12 192.056 464.168 191.906 462.817 191.906V191.005H472.029L483.845 216.489L495.46 191.005H504.672V191.906H503.521C502.119 191.906 501.118 192.306 500.567 193.158C500.216 193.658 500.016 194.86 500.016 196.662V217.941C500.016 219.943 500.216 221.195 500.667 221.696C501.268 222.346 502.219 222.697 503.471 222.697H504.622V223.598H490.804V222.647H491.955C493.357 222.647 494.308 222.246 494.859 221.395C495.21 220.894 495.41 219.693 495.41 217.891V196.162L482.843 223.548H482.142Z" fill="#232323" />
+                   <path d="M544.526 222.647V223.548H530.557V222.647H531.709C533.06 222.647 534.012 222.246 534.662 221.445C535.063 220.945 535.213 219.693 535.213 217.74V196.712C535.213 195.06 535.113 193.959 534.913 193.458C534.763 193.057 534.412 192.707 533.911 192.406C533.211 192.006 532.46 191.856 531.709 191.856H530.557V190.955H544.526V191.856H543.374C542.022 191.856 541.071 192.256 540.47 193.007C540.07 193.508 539.869 194.76 539.869 196.712V217.74C539.869 219.392 539.97 220.494 540.17 220.995C540.32 221.395 540.67 221.746 541.171 222.046C541.872 222.447 542.573 222.647 543.374 222.647H544.526Z" fill="#232323" />
+                   <path d="M597.747 191.005L598.097 198.665H597.196C597.046 197.313 596.795 196.362 596.495 195.761C595.994 194.81 595.344 194.159 594.492 193.708C593.691 193.258 592.59 193.057 591.238 193.057H586.632V217.941C586.632 219.943 586.832 221.195 587.283 221.696C587.884 222.346 588.835 222.697 590.086 222.697H591.238V223.598H577.42V222.647H578.571C579.973 222.647 580.924 222.246 581.475 221.395C581.825 220.894 582.026 219.693 582.026 217.89V193.007H578.121C576.619 193.007 575.517 193.107 574.866 193.358C574.015 193.658 573.314 194.259 572.713 195.11C572.113 195.961 571.762 197.163 571.662 198.615H570.761L571.161 190.955H597.747V191.005Z" fill="#232323" />
+                </g>
+            </svg>
+            <div class="hidden md:block w-px h-8 bg-gray-300 mx-4"></div>
+            <span class="hidden md:block text-xs text-gray-400 tracking-wider">每个人生都是一部历史</span>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+            <button onclick="scrollToSection('home')" class="text-[#222222] hover:text-[#BC5834] transition-colors font-medium text-sm">首页</button>
+            <button onclick="scrollToSection('service')" class="text-[#222222] hover:text-[#BC5834] transition-colors font-medium text-sm">服务特色</button>
+            <button onclick="scrollToSection('testimonials')" class="text-[#222222] hover:text-[#BC5834] transition-colors font-medium text-sm">客户寄语</button>
+            <button onclick="scrollToSection('about')" class="text-[#222222] hover:text-[#BC5834] transition-colors font-medium text-sm">关于我们</button>
+            
+            <div class="w-px h-4 bg-gray-300 mx-2"></div>
+            
+            <div id="auth-container-desktop">
+                <!-- Injected via JS -->
+            </div>
+            
+            <button onclick="handleBookClick()" class="bg-[#BC5834] hover:bg-[#a34a2a] text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg shadow-[#BC5834]/20">
+                立即预约
+            </button>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden">
+            <button onclick="toggleMobileMenu()" class="text-[#222222]">
+                <i data-lucide="menu" id="menu-icon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-0 w-full bg-[#F0EEE5] border-b border-[#E5E1D0] p-4 flex flex-col space-y-4 shadow-lg fade-in">
+             <button onclick="scrollToSection('home')" class="text-[#222222] font-medium py-2 text-left">首页</button>
+             <button onclick="scrollToSection('service')" class="text-[#222222] font-medium py-2 text-left">服务特色</button>
+             <button onclick="scrollToSection('testimonials')" class="text-[#222222] font-medium py-2 text-left">客户寄语</button>
+             <button onclick="scrollToSection('about')" class="text-[#222222] font-medium py-2 text-left">关于我们</button>
+             <div class="h-px bg-gray-200 w-full my-2"></div>
+             <div id="auth-container-mobile">
+                 <!-- Injected via JS -->
+             </div>
+             <button onclick="handleBookClick(); toggleMobileMenu()" class="bg-[#BC5834] hover:bg-[#a34a2a] text-white w-full py-2 rounded-lg font-medium transition-colors shadow-lg shadow-[#BC5834]/20">
+                立即预约
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen min-h-[600px] flex items-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1767980643245-774ec64d7c40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3cml0aW5nJTIwYm9vayUyMGhpc3RvcnklMjBtZW1vcnklMjB2aW50YWdlJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MXx8fHwxNzY5Njc3ODY3fDA&ixlib=rb-4.1.0&q=80&w=1920" 
+                 alt="Writing memories" 
+                 class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black/30 mix-blend-multiply"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#2c1810]/60 to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-8">
+            <div class="md:w-2/3 text-left slide-up">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 text-white tracking-tight drop-shadow-lg leading-tight">
+                    把岁月写成书<br/>让记忆永留存
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-light mb-8 text-[#E5E1D0] opacity-90">
+                    山顶传记——您身边的传记专家
+                </h2>
+                <p class="text-lg mb-12 text-[#E5E1D0] font-light opacity-90 leading-relaxed">
+                    欢迎预约，开启您的传记之旅！
+                </p>
+                <div class="flex justify-start">
+                    <button onclick="handleBookClick()" class="bg-[#BC5834] hover:bg-[#a34a2a] text-white px-8 py-3 text-lg rounded-lg font-medium transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(188,88,52,0.6)] transform hover:-translate-y-1">
+                        立即预约
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emotion Section -->
+    <section id="emotion" class="py-20 bg-[#F0EEE5] px-4 md:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#222222] mb-4">还记得吗？那些不经意的瞬间</h2>
+                <p class="text-xl text-[#BC5834] font-medium">别让遗忘变成遗憾</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1722173205783-d602329f0743?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvbGQlMjBwaG90byUyMGFsYnVtJTIwZmFtaWx5JTIwbWVtb3J5JTIwYXNpYW58ZW58MXx8fHwxNzY5Njc3ODY3fDA&ixlib=rb-4.1.0&q=80&w=800" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Old Photos">
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4 text-[#BC5834]">
+                             <svg viewBox="0 0 24 24" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-[#222222]">父母总爱念叨以前的事</h3>
+                        <p class="text-gray-600 leading-relaxed text-sm">那些关于奋斗的汗水、关于爱情的青涩、关于家族迁徙的脚步，都是我们生命的来处。它不仅仅是一本书，更是家族精神的薪火相传。</p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1746258537526-94ae24b11d88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFuZHBhcmVudCUyMGNoaWxkJTIwbG9va2luZyUyMGF0JTIwcGhvdG8lMjBhc2lhbnxlbnwxfHx8fDE3Njk2Nzc4Njd8MA&ixlib=rb-4.1.0&q=80&w=800" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Grandparent and Child">
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4 text-[#BC5834]">
+                             <i data-lucide="user" class="w-10 h-10"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-[#222222]">当孩子指着老照片问“这是谁”时</h3>
+                        <p class="text-gray-600 leading-relaxed text-sm">不要让答案只剩下一个名字。这本传记，能告诉孩子爷爷奶奶曾怎样热烈地活过。我们要留下的，不只是照片，更是家风与精神。</p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1609558755571-fe0b9dce7595?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZW5pb3IlMjBtYW4lMjB3cml0aW5nJTIwam91cm5hbCUyMGFzaWFufGVufDF8fHx8MTc2OTY3Nzg2N3ww&ixlib=rb-4.1.0&q=80&w=800" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" alt="Writing Memory">
+                    </div>
+                    <div class="p-6">
+                        <div class="mb-4 text-[#BC5834]">
+                            <svg viewBox="0 0 24 24" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-[#222222]">我们总以为来日方长</h3>
+                        <p class="text-gray-600 leading-relaxed text-sm">研究显示，89%的人无法完整回忆5年前的细节。人生99%的珍贵时刻，终将在记忆中彻底模糊。趁现在还记得，趁现在还来得及，把记忆写进书里。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Section -->
+    <section id="service" class="py-20 bg-[#E5E1D0] px-4 md:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-[40px] md:text-[60px] font-semibold text-[#222222] mb-4 font-pingfang leading-none">山顶传记</h2>
+                <p class="text-[24px] md:text-[36px] text-[#C1603D] font-normal font-pingfang leading-none">您身边的传记专家</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                <!-- Service Card 1 -->
+                <div class="bg-white rounded-[16px] w-full max-w-[360px] h-[395px] relative flex flex-col items-center mx-auto shadow-sm hover:shadow-lg transition-shadow">
+                    <div class="absolute top-[60px] w-[116px] h-[116px] rounded-full bg-[#C1603D] flex items-center justify-center text-white">
+                        <div class="w-[50px] h-[60px] relative">
+                             <svg viewBox="0 0 49.775 58.2" class="w-full h-full" fill="none">
+                                 <rect x="13.95" y="2.6" width="21.875" height="35" rx="10.9375" stroke="white" stroke-width="5.2" stroke-linejoin="round" />
+                                 <path d="M2.6 26.6625C2.6 32.5735 4.94814 38.2424 9.12786 42.4221C13.3076 46.6019 18.9765 48.95 24.8875 48.95C30.7985 48.95 36.4674 46.6019 40.6471 42.4221C44.8269 38.2424 47.175 32.5735 47.175 26.6625" stroke="white" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" />
+                                 <path d="M24.45 55.6L24.45 50.6" stroke="white" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" />
+                              </svg>
+                        </div>
+                    </div>
+                    <h3 class="absolute top-[231px] text-[30px] font-semibold text-[#222222] font-pingfang">1对1采访</h3>
+                    <div class="absolute top-[247px] w-[265px] h-[80px] pointer-events-none">
+                         <svg class="block w-full h-full" fill="none" viewBox="0 0 265 80" preserveAspectRatio="none">
+                             <path d="M25.7953 73.3292C24.7516 73.3113 23.7166 73.3805 22.7494 73.5314C21.7821 73.6823 20.9011 73.9123 20.1576 74.2091C19.4141 74.5059 18.8219 74.8633 18.4154 75.2609C18.0089 75.6584 17.7961 76.0888 17.7885 76.5265C17.7808 76.9642 17.9791 77.4014 18.3715 77.8126C18.7639 78.2238 19.343 78.6009 20.0756 78.923C20.8083 79.2452 21.6805 79.5065 22.642 79.6906C23.6033 79.8746 24.6354 79.9783 25.6791 79.9962C26.723 80.0142 27.7586 79.946 28.726 79.7951C29.6933 79.6441 30.5742 79.4132 31.3178 79.1163C32.0612 78.8195 32.6535 78.4621 33.0599 78.0646C33.4661 77.6672 33.6792 77.2374 33.6869 76.7999C33.6946 76.3622 33.4962 75.9251 33.1039 75.5138C32.7115 75.1025 32.1325 74.7247 31.3998 74.4025C30.6671 74.0803 29.7949 73.82 28.8334 73.6359C27.8718 73.4518 26.8392 73.3472 25.7953 73.3292Z" fill="#DBC1A3" />
+                             <path d="M238.647 73.3274C239.691 73.3095 240.727 73.3776 241.694 73.5286C242.661 73.6795 243.542 73.9105 244.286 74.2073C245.029 74.5041 245.621 74.8616 246.027 75.259C246.434 75.6565 246.647 76.086 246.655 76.5237C246.663 76.9614 246.464 77.3986 246.072 77.8098C245.68 78.221 245.101 78.599 244.368 78.9212C243.635 79.2433 242.763 79.5037 241.802 79.6878C240.84 79.8718 239.807 79.9755 238.763 79.9934C237.719 80.0114 236.684 79.9432 235.717 79.7922C234.749 79.6413 233.868 79.4104 233.125 79.1135C232.381 78.8167 231.789 78.4593 231.383 78.0618C230.976 77.6644 230.763 77.2347 230.756 76.7971C230.748 76.3594 230.946 75.9223 231.339 75.511C231.731 75.0998 232.31 74.7218 233.043 74.3997C233.776 74.0775 234.648 73.8171 235.609 73.6331C236.571 73.449 237.603 73.3453 238.647 73.3274Z" fill="#DBC1A3" />
+                         </svg>
+                    </div>
+                    <div class="absolute top-[280px] flex flex-col items-center gap-1 text-[18px] text-[#666666]">
+                        <p>贴心引导</p>
+                        <p>全程陪伴</p>
+                    </div>
+                </div>
+
+                <!-- Service Card 2 -->
+                <div class="bg-white rounded-[16px] w-full max-w-[360px] h-[395px] relative flex flex-col items-center mx-auto shadow-sm hover:shadow-lg transition-shadow">
+                    <div class="absolute top-[60px] w-[116px] h-[116px] rounded-full bg-[#C1603D] flex items-center justify-center text-white">
+                        <div class="w-[116px] h-[116px] flex items-center justify-center">
+                            <svg viewBox="0 0 116 116" class="w-full h-full" fill="none">
+                                <path d="M61.5 75.5C61.5 74.9478 61.9489 74.5055 62.4984 74.4498C64.5419 74.2426 66.4599 73.3953 67.9276 71.9276C69.417 70.4382 70.3361 68.4853 70.5446 66.4079C70.5947 65.9082 70.9971 65.5 71.4994 65.5C72.0016 65.5 72.404 65.9082 72.4542 66.4079C72.6626 68.4853 73.5818 70.4382 75.0712 71.9276C76.5605 73.417 78.5135 74.3361 80.5909 74.5446C81.0906 74.5947 81.4988 74.9971 81.4988 75.4994C81.4988 76.0016 81.0906 76.404 80.5909 76.4542C78.5135 76.6626 76.5605 77.5818 75.0712 79.0711C73.5818 80.5605 72.6627 82.5134 72.4542 84.5907C72.404 85.0905 72.0015 85.4987 71.4992 85.4987C70.997 85.4987 70.5946 85.0907 70.5442 84.5911C70.335 82.5143 69.4155 80.5622 67.9263 79.0736C66.4378 77.5857 64.4866 76.6672 62.411 76.4582C61.9096 76.4077 61.5 76.004 61.5 75.5ZM41.3475 63.0812C41.139 63.6408 40.9421 64.1848 40.7551 64.7199C40.4391 65.6238 41.5155 66.4348 42.3764 66.0155C44.1783 65.1379 46.1799 64.553 48.3788 64.2775C54.4006 63.5302 59.7753 59.6914 62.7051 54.7865C62.9323 54.406 62.8598 53.9226 62.5463 53.6094L60.1405 51.206C59.75 50.816 59.7494 50.1834 60.139 49.7925L62.9588 46.9637L65.4638 44.4587C66.5363 43.3862 67.7513 41.3987 69.0338 38.5412C55.0463 40.7087 46.4888 49.27 41.3475 63.085V63.0812ZM66.4988 50.4925L68.5622 52.5529C68.8305 52.8207 68.9264 53.2174 68.7954 53.5732C66.1082 60.8747 58.7396 68.0225 49.0013 69.2425C42.8795 70.006 38.871 73.9236 36.9614 80.9954C36.6511 82.1444 35.6384 82.99 34.4482 82.99C32.905 82.99 31.7264 81.6072 31.9837 80.0856C34.6813 64.1336 41.0749 33.822 75.0905 33.008C75.7729 32.9917 76.2769 33.6605 76.0531 34.3053C73.7046 41.0712 71.356 45.6317 69.0075 47.9837L66.5014 50.4936C66.5004 50.4946 66.4988 50.4939 66.4988 50.4925Z" fill="white" transform="translate(0 0) scale(1)" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="absolute top-[231px] text-[30px] font-semibold text-[#222222] font-pingfang">大师级撰写</h3>
+                    <div class="absolute top-[247px] w-[265px] h-[80px] pointer-events-none">
+                         <svg class="block w-full h-full" fill="none" viewBox="0 0 265 80" preserveAspectRatio="none">
+                             <path d="M25.7953 73.3298C24.7514 73.3118 23.7158 73.38 22.7484 73.5309C21.7814 73.6818 20.901 73.9119 20.1576 74.2087C19.4142 74.5054 18.8219 74.863 18.4154 75.2604C18.0089 75.658 17.7951 76.0883 17.7875 76.526C17.7798 76.9638 17.9781 77.4009 18.3705 77.8122C18.7629 78.2234 19.3419 78.6013 20.0746 78.9235C20.8073 79.2457 21.6796 79.506 22.641 79.6901C23.6025 79.8742 24.6352 79.9778 25.6791 79.9958C26.723 80.0137 27.7586 79.9455 28.726 79.7946C29.6931 79.6437 30.5734 79.4127 31.3168 79.1159C32.0603 78.819 32.6524 78.4617 33.059 78.0641C33.4654 77.6667 33.6782 77.2371 33.6859 76.7995C33.6936 76.3618 33.4962 75.9246 33.1039 75.5134C32.7115 75.1021 32.1324 74.7242 31.3998 74.402C30.6671 74.0799 29.7948 73.8195 28.8334 73.6354C27.8718 73.4513 26.8392 73.3477 25.7953 73.3298Z" fill="#DBC1A3" />
+                             <path d="M238.647 73.3274C239.691 73.3095 240.727 73.3776 241.694 73.5286C242.661 73.6795 243.542 73.9105 244.286 74.2073C245.029 74.5041 245.621 74.8616 246.027 75.259C246.434 75.6565 246.647 76.086 246.655 76.5237C246.663 76.9614 246.464 77.3986 246.072 77.8098C245.68 78.221 245.101 78.599 244.368 78.9212C243.635 79.2433 242.763 79.5037 241.802 79.6878C240.84 79.8718 239.807 79.9755 238.763 79.9934C237.719 80.0114 236.684 79.9432 235.717 79.7922C234.749 79.6413 233.868 79.4104 233.125 79.1135C232.381 78.8167 231.789 78.4593 231.383 78.0618C230.976 77.6644 230.763 77.2347 230.756 76.7971C230.748 76.3594 230.946 75.9223 231.339 75.511C231.731 75.0998 232.31 74.7218 233.043 74.3997C233.776 74.0775 234.648 73.8171 235.609 73.6331C236.571 73.449 237.603 73.3453 238.647 73.3274Z" fill="#DBC1A3" />
+                         </svg>
+                    </div>
+                    <div class="absolute top-[280px] flex flex-col items-center gap-1 text-[18px] text-[#666666]">
+                        <p>专业作家文笔</p>
+                        <p>还原真实人生</p>
+                    </div>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="bg-white rounded-[16px] w-full max-w-[360px] h-[395px] relative flex flex-col items-center mx-auto shadow-sm hover:shadow-lg transition-shadow">
+                    <div class="absolute top-[60px] w-[116px] h-[116px] rounded-full bg-[#C1603D] flex items-center justify-center text-white">
+                        <div class="w-[50px] h-[55px] relative">
+                             <svg viewBox="0 0 49.6445 55.2" class="w-full h-full" fill="none">
+                                 <path d="M47.0445 27.6V41.4889C47.0445 46.7267 47.0445 49.3456 45.4173 50.9728C43.7901 52.6 41.1712 52.6 35.9333 52.6H9.54445C5.70914 52.6 2.60001 49.4909 2.60001 45.6556M47.0445 27.6V13.7111C47.0445 8.4733 47.0445 5.85438 45.4173 4.2272C43.7901 2.60001 41.1712 2.60001 35.9333 2.60001H13.7111C8.47329 2.60001 5.85438 2.60001 4.2272 4.2272C2.60001 5.85438 2.60001 8.47329 2.60001 13.7111V45.6556M47.0445 27.6C47.0445 32.8378 47.0445 35.4568 45.4173 37.0839C43.7901 38.7111 41.1712 38.7111 35.9333 38.7111H9.54445C5.70914 38.7111 2.60001 41.8203 2.60001 45.6556" stroke="white" stroke-width="5.2" />
+                                 <path d="M12.0161 27.687C13.322 26.2851 15.425 26.0348 16.927 27.1863C20.932 30.2404 28.743 36.2985 34 40.9046" stroke="white" stroke-width="5.2" stroke-linecap="round" />
+                              </svg>
+                        </div>
+                    </div>
+                    <h3 class="absolute top-[231px] text-[30px] font-semibold text-[#222222] font-pingfang">精美实体书</h3>
+                    <div class="absolute top-[247px] w-[265px] h-[80px] pointer-events-none">
+                         <svg class="block w-full h-full" fill="none" viewBox="0 0 265 80" preserveAspectRatio="none">
+                             <path d="M25.7963 73.3297C24.7524 73.3117 23.7167 73.3799 22.7494 73.5308C21.782 73.6818 20.9012 73.9127 20.1576 74.2095C19.4141 74.5064 18.8219 74.8638 18.4154 75.2613C18.009 75.6588 17.7961 76.0892 17.7885 76.5269C17.7809 76.9645 17.9792 77.4019 18.3715 77.813C18.7639 78.2242 19.343 78.6013 20.0756 78.9234C20.8083 79.2456 21.6804 79.5059 22.642 79.69C23.6034 79.8741 24.6353 79.9787 25.6791 79.9966C26.7229 80.0146 27.7586 79.9464 28.726 79.7955C29.6933 79.6445 30.5742 79.4136 31.3177 79.1168C32.0613 78.8199 32.6534 78.4625 33.0599 78.065C33.4664 77.6675 33.6793 77.2371 33.6869 76.7994C33.6944 76.3618 33.4961 75.9254 33.1039 75.5142C32.7115 75.1029 32.1325 74.7251 31.3998 74.4029C30.667 74.0807 29.7949 73.8204 28.8334 73.6363C27.872 73.4522 26.84 73.3476 25.7963 73.3297Z" fill="#DBC1A3" />
+                             <path d="M238.647 73.3274C239.691 73.3095 240.727 73.3776 241.694 73.5286C242.661 73.6795 243.542 73.9105 244.286 74.2073C245.029 74.5041 245.621 74.8616 246.027 75.259C246.434 75.6565 246.647 76.086 246.655 76.5237C246.663 76.9614 246.464 77.3986 246.072 77.8098C245.68 78.221 245.101 78.599 244.368 78.9212C243.635 79.2433 242.763 79.5037 241.802 79.6878C240.84 79.8718 239.807 79.9755 238.763 79.9934C237.719 80.0114 236.684 79.9432 235.717 79.7922C234.749 79.6413 233.868 79.4104 233.125 79.1135C232.381 78.8167 231.789 78.4593 231.383 78.0618C230.976 77.6644 230.763 77.2347 230.756 76.7971C230.748 76.3594 230.946 75.9223 231.339 75.511C231.731 75.0998 232.31 74.7218 233.043 74.3997C233.776 74.0775 234.648 73.8171 235.609 73.6331C236.571 73.449 237.603 73.3453 238.647 73.3274Z" fill="#DBC1A3" />
+                         </svg>
+                    </div>
+                    <div class="absolute top-[280px] flex flex-col items-center gap-1 text-[18px] text-[#666666]">
+                        <p>精装定制</p>
+                        <p>永久典藏</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-12">
+                <button onclick="handleBookClick()" class="bg-[#BC5834] hover:bg-[#a34a2a] text-white px-8 py-3 text-lg rounded-lg font-medium transition-colors shadow-xl">
+                    立即预约
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-[#F0EEE5] px-4 md:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#222222] mb-4">平凡的一生，也值得被记录</h2>
+                <p class="text-gray-600">他们都不是作家，却都写出了感人的传记</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 relative">
+                    <p class="text-gray-700 italic mb-6 leading-relaxed">"以前总觉得，自己这平凡的一生有什么好记的？直到这本传记真的捧在手里，我才发现，原来那些细碎的日子，拼凑起来竟如此闪闪发光。这不是一本书，这是我对自己一辈子的交代。"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1765248148922-b452232e1107?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZW5pb3IlMjBhc2lhbiUyMG1hbiUyMHBvcnRyYWl0JTIwaGFwcHl8ZW58MXx8fHwxNzY5NDg5NjU5fDA&ixlib=rb-4.1.0&q=80&w=200" alt="刘老师" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-[#222222]">刘老师 <span class="text-sm font-normal text-gray-500">/ 68岁</span></h4>
+                            <p class="text-xs text-[#BC5834] font-medium">退休教师</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 relative">
+                    <p class="text-gray-700 italic mb-6 leading-relaxed">"父亲平时沉默寡言，我以为早就读懂了他。但这本传记让我第一次认识了那个年轻、热血、也曾迷茫过的他。感谢这份礼物，它让我重新认识了父亲，也让我们两代人的心贴得更近了。"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1758600432264-b8d2a0fd7d83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwYXNpYW58ZW58MXx8fDE3Njk0OTUxNzJ8MA&ixlib=rb-4.1.0&q=80&w=200" alt="陈先生" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-[#222222]">陈先生 <span class="text-sm font-normal text-gray-500">/ 41岁</span></h4>
+                            <p class="text-xs text-[#BC5834] font-medium">为父亲购买</p>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Testimonial 3 -->
+                 <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 relative">
+                    <p class="text-gray-700 italic mb-6 leading-relaxed">"很多事如果不被问起，我可能这辈子都不会再想起来。这种跟着话头慢慢聊的方式，帮我找回了好多差点忘掉的细节。这一路讲完，感觉就像把这大半辈子的陈年旧事都理顺了，心里头特别敞亮。"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1729559149688-bee985e447ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZW5pb3IlMjBhc2lhbiUyMG1hbiUyMHBvcnRyYWl0JTIwaGFwcHl8ZW58MXx8fHwxNzY5NDg5NjU5fDA&ixlib=rb-4.1.0&q=80&w=200" alt="张伯伯" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-[#222222]">张伯伯 <span class="text-sm font-normal text-gray-500">/ 70岁</span></h4>
+                            <p class="text-xs text-[#BC5834] font-medium">退休职工</p>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Testimonial 4 -->
+                 <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 relative">
+                    <p class="text-gray-700 italic mb-6 leading-relaxed">"拿到样书的那一刻，分量沉甸甸的。无论是纸张的触感，还是文字的编排，都透着一股庄重。这不仅是一本传记，更是留给孙辈们最珍贵的传家宝，它值得被好好收藏。"</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://images.unsplash.com/photo-1574132190990-cfd62178bb1c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZW5pb3IlMjBhc2lhbiUyMG1hbiUyMGdsYXNzZXMlMjByZWFkaW5nfGVufDF8fHx8MTc2OTQ5NTE3Mnww&ixlib=rb-4.1.0&q=80&w=200" alt="吴爷爷" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <h4 class="font-bold text-[#222222]">吴爷爷 <span class="text-sm font-normal text-gray-500">/ 79岁</span></h4>
+                            <p class="text-xs text-[#BC5834] font-medium">退休高级技工</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 bg-[#E5E1D0] px-4 md:px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#222222] mb-4">关于山顶</h2>
+                <div class="max-w-4xl mx-auto">
+                  <div class="text-gray-600 space-y-2">
+                    <p class="leading-snug">人生如登山，半世风雨，终见顶峰。登高回望，方知生命的壮阔。</p>
+                    <p class="leading-snug">我们取名“山顶”，是因为我们相信，每一位登顶的长者，都拥有一览众山小的智慧与胸怀。</p>
+                    <p class="leading-snug">这里，不是终点，而是整理行囊、细数珍宝的最佳观景点。</p>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl p-8 shadow-sm h-full">
+                    <h3 class="text-2xl font-bold text-[#222222] mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-[#BC5834] rounded-full"></span>
+                        我们是谁？
+                    </h3>
+                    <p class="text-gray-700 leading-relaxed text-base text-justify">
+                        在信息碎片化的时代，我们是一群执着于“慢”的人。我们拒绝冰冷的数据堆砌，只相信人心的温度。我们聚在一起，只为了对抗时间的遗忘，为您哪怕只言片语的记忆，筑起一座坚固的堡垒。
+                    </p>
+                </div>
+                 <!-- Card 2 -->
+                 <div class="bg-white rounded-xl p-8 shadow-sm h-full">
+                    <h3 class="text-2xl font-bold text-[#222222] mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-[#BC5834] rounded-full"></span>
+                        我们的坚持
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start text-base text-gray-700">
+                            <span class="font-bold text-[#222222] text-xl mr-3 shrink-0">倾听</span>
+                            <span>不止是记录，更是知心倾听。</span>
+                        </div>
+                        <div class="flex items-start text-base text-gray-700">
+                            <span class="font-bold text-[#222222] text-xl mr-3 shrink-0">书写</span>
+                            <span>以文学笔触，还原真实风骨。</span>
+                        </div>
+                        <div class="flex items-start text-base text-gray-700">
+                            <span class="font-bold text-[#222222] text-xl mr-3 shrink-0">传承</span>
+                            <span>不只是做书，更是修缮家谱。</span>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Card 3 -->
+                 <div class="bg-white rounded-xl p-8 shadow-sm h-full">
+                    <h3 class="text-2xl font-bold text-[#222222] mb-6 flex items-center gap-2">
+                        <span class="w-1.5 h-6 bg-[#BC5834] rounded-full"></span>
+                        为何而作？
+                    </h3>
+                    <p class="text-gray-700 leading-relaxed text-base text-justify">
+                        平凡即伟大。历史书里记载了大人物的丰功伟绩，但我们认为，支撑起这个世界基石的，是无数普通人含辛茹苦的一生。在“山顶”，没有微不足道的人生。每个认真生活过的人，都值得被铭记。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-[#2c1810] text-[#E5E1D0]">
+        <div class="relative w-full overflow-hidden group">
+            <div class="absolute inset-0">
+                <img src="https://images.unsplash.com/photo-1565374703327-3f7d46db8fc3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsaWJyYXJ5JTIwb2xkJTIwYm9va3MlMjBoaXN0b3J5JTIwYmFja2dyb3VuZHxlbnwxfHx8fDE3Njk2Nzc4Njd8MA&ixlib=rb-4.1.0&q=80&w=1920" 
+                     alt="Writing history" 
+                     class="w-full h-full object-cover object-right opacity-60 transition-transform duration-[20s] ease-linear" />
+            </div>
+            
+            <div class="relative z-10 max-w-6xl mx-auto py-48 px-4 md:px-8 flex">
+                <div class="md:w-1/2 slide-up">
+                    <h2 class="text-4xl md:text-6xl font-bold mb-4 text-white tracking-tight drop-shadow-lg leading-tight">
+                        一书一世界
+                    </h2>
+                    <h3 class="text-2xl md:text-3xl font-light mb-8 text-[#E5E1D0] opacity-90">
+                        每个人生都是一部历史
+                    </h3>
+                    <p class="text-lg mb-12 text-[#E5E1D0] font-light opacity-90 leading-relaxed">
+                        我们交付给您的，不仅仅是一本厚重的书，<br/>
+                        而是一份能跨越时间、连接几代人情感的传家之宝。<br/>
+                        欢迎预约，开启您的传记之旅！
+                    </p>
+                    <div class="flex justify-start">
+                        <button onclick="handleBookClick()" class="bg-[#BC5834] hover:bg-[#a34a2a] text-white px-8 py-3 text-lg rounded-lg font-medium transition-all duration-300 shadow-2xl hover:shadow-[0_0_40px_rgba(188,88,52,0.6)] transform hover:-translate-y-1">
+                            立即预约
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-[#2c1810] border-t border-white/10 relative z-20">
+            <div class="max-w-6xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row justify-between items-center text-sm text-[#E5E1D0]/60">
+                <div class="mb-4 md:mb-0">
+                    <!-- Footer Logo (Simpler SVG) -->
+                    <svg viewBox="0 0 600 240" class="h-8 w-auto opacity-70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <path d="M37.9005 0C16.9225 0 0 17.5234 0 39.2523V205.924C0 224.249 14.3692 239.119 32.0427 239.119H192.256V172.73V0H37.9005ZM29.6395 105.441L53.3711 80.8577C58.3778 75.7009 64.7863 71.9459 71.7456 71.0447C81.3584 69.793 90.5707 73.0974 97.2796 80.0066L105.14 88.1675L109.446 83.7115C119.109 73.6982 134.88 73.6982 144.593 83.7115L165.571 105.441C168.074 108.044 168.074 112.3 165.571 114.853C163.067 117.457 159.012 117.457 156.559 114.853L135.581 93.1241C130.824 88.2676 123.214 88.2676 118.508 93.1241L114.202 97.58L143.241 127.67C145.744 130.274 145.744 134.429 143.241 137.033C140.738 139.636 136.682 139.636 134.179 137.033L88.1675 89.319C81.3083 82.2095 70.0934 82.2095 63.2342 89.319L38.7015 114.753C36.1982 117.356 32.1428 117.356 29.6395 114.753C27.1361 112.2 27.1361 107.994 29.6395 105.441ZM179.489 225.851H32.0927C21.5287 225.851 12.8671 216.889 12.8671 205.924C12.8671 194.96 21.5287 185.998 32.0927 185.998H179.489V225.851Z" fill="#E5E1D0" />
+                         <!-- Simplified dots/shapes for footer logo -->
+                         <rect x="300" y="50" width="200" height="150" fill="#E5E1D0" opacity="0.5" rx="10"/>
+                    </svg>
+                </div>
+                <div class="flex flex-col md:items-end space-y-1 text-xs md:text-right">
+                    <p class="font-bold">北京四十三智果科技有限公司</p>
+                    <p>地址：北京市朝阳区望京东园四区8号楼9层919</p>
+                    <p>Copyright © 2026 北京四十三智果科技有限公司 版权所有 | 京ICP备2024060716号-9</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeLoginModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden pointer-events-auto transform transition-all scale-95 opacity-0" id="login-modal-content">
+                 <div class="p-6 bg-[#F0EEE5] border-b border-[#E5E1D0] flex justify-between items-center">
+                    <div class="flex space-x-4">
+                        <button onclick="toggleLoginMode(true)" id="tab-login" class="text-xl font-bold transition-colors text-[#BC5834]">登录</button>
+                        <span class="text-gray-300 text-xl">/</span>
+                        <button onclick="toggleLoginMode(false)" id="tab-register" class="text-xl font-bold transition-colors text-gray-400 hover:text-gray-600">注册</button>
+                    </div>
+                    <button onclick="closeLoginModal()" class="text-gray-500 hover:text-[#BC5834] transition-colors">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                 </div>
+                 <div class="p-8">
+                     <form onsubmit="handleLoginSubmit(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+                            <div class="relative">
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i data-lucide="user" class="w-5 h-5"></i>
+                                </div>
+                                <input type="text" id="login-username" placeholder="请输入用户名" class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#BC5834] focus:border-transparent outline-none transition-all" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+                            <div class="relative">
+                                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i data-lucide="lock" class="w-5 h-5"></i>
+                                </div>
+                                <input type="password" id="login-password" placeholder="请输入密码" class="w-full pl-10 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#BC5834] focus:border-transparent outline-none transition-all" required minlength="6">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center space-x-2 cursor-pointer select-none">
+                                <input type="checkbox" id="remember-me" class="custom-checkbox hidden">
+                                <div class="w-5 h-5 rounded border border-gray-300 flex items-center justify-center transition-colors">
+                                    <i data-lucide="check" class="w-3.5 h-3.5 text-white"></i>
+                                </div>
+                                <span class="text-sm text-gray-600">记住我</span>
+                            </label>
+                            <button type="button" class="text-sm text-[#BC5834] hover:underline">忘记密码？</button>
+                        </div>
+                        <button type="submit" id="login-btn" class="w-full bg-[#BC5834] hover:bg-[#a34a2a] text-white py-3 rounded-lg font-medium transition-colors">
+                            登录
+                        </button>
+                     </form>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closePaymentModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+            <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col md:flex-row h-auto max-h-[90vh] transform transition-all scale-95 opacity-0" id="payment-modal-content">
+                 <!-- Left Side: Product Info -->
+                 <div class="bg-[#F0EEE5] p-8 md:w-1/2 border-r border-[#E5E1D0] flex flex-col">
+                    <div class="flex-1 flex flex-col justify-center">
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-[#E5E1D0] mb-8 relative overflow-hidden">
+                            <h4 class="text-2xl font-bold text-[#222222] mb-2">人生传记典藏版</h4>
+                            <div class="text-3xl font-bold text-[#BC5834] mb-6">¥ 8,888</div>
+                            <div class="space-y-4 mb-6">
+                                <p class="font-bold text-gray-700">包含服务：</p>
+                                <ul class="space-y-3" id="service-list">
+                                    <!-- Items injected by JS for lucide icons -->
+                                    <li class="flex items-center gap-3 text-gray-600"><div class="w-5 h-5 rounded-full bg-[#BC5834]/10 flex items-center justify-center shrink-0"><i data-lucide="check" class="w-3 h-3 text-[#BC5834]"></i></div>陪伴式深度采访</li>
+                                    <li class="flex items-center gap-3 text-gray-600"><div class="w-5 h-5 rounded-full bg-[#BC5834]/10 flex items-center justify-center shrink-0"><i data-lucide="check" class="w-3 h-3 text-[#BC5834]"></i></div>专业传记作家团队写作</li>
+                                    <li class="flex items-center gap-3 text-gray-600"><div class="w-5 h-5 rounded-full bg-[#BC5834]/10 flex items-center justify-center shrink-0"><i data-lucide="check" class="w-3 h-3 text-[#BC5834]"></i></div>最多20万字撰写</li>
+                                    <li class="flex items-center gap-3 text-gray-600"><div class="w-5 h-5 rounded-full bg-[#BC5834]/10 flex items-center justify-center shrink-0"><i data-lucide="check" class="w-3 h-3 text-[#BC5834]"></i></div>精装实体书2本</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 text-sm text-gray-500 mb-6">
+                            <i data-lucide="shield" class="w-4 h-4"></i>
+                            <span>信息安全保障 · 官方担保交易</span>
+                        </div>
+                    </div>
+                 </div>
+                 
+                 <!-- Right Side -->
+                 <div class="p-8 md:w-1/2 flex flex-col overflow-y-auto relative" id="payment-right-side">
+                     <div class="flex justify-end mb-4 absolute top-4 right-4 z-10">
+                        <button onclick="closePaymentModal()" class="text-gray-400 hover:text-[#BC5834]">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                     </div>
+                     
+                     <!-- Step 1: Form -->
+                     <div id="payment-step-form">
+                        <h3 class="text-2xl font-bold text-[#222222] mb-6 mt-2">预约服务</h3>
+                        <div class="space-y-5 flex-1">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">您的真实姓名 <span class="text-red-500">*</span></label>
+                                <input type="text" id="book-name" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#BC5834] focus:border-transparent outline-none" placeholder="请输入姓名">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">手机号 <span class="text-red-500">*</span></label>
+                                <input type="tel" id="book-phone" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#BC5834] focus:border-transparent outline-none" placeholder="请输入手机号">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">为谁写</label>
+                                <div class="flex flex-col gap-3">
+                                    <label class="w-full p-3 border rounded-lg cursor-pointer transition-all flex items-center justify-center gap-2 text-center" id="label-usage-self">
+                                        <input type="radio" name="usage" value="self" class="hidden" checked onchange="updateUsageUI()">
+                                        为自己
+                                    </label>
+                                    <label class="w-full p-3 border rounded-lg cursor-pointer transition-all flex items-center justify-center gap-2 text-center" id="label-usage-gift">
+                                        <input type="radio" name="usage" value="gift" class="hidden" onchange="updateUsageUI()">
+                                        为父母/长辈/他人
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">其他 <span class="text-gray-400 font-normal">(选填)</span></label>
+                                <textarea id="book-notes" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#BC5834] focus:border-transparent outline-none resize-none" placeholder="如有特殊需求请备注"></textarea>
+                            </div>
+                            <button onclick="handlePaymentNext()" class="w-full bg-[#BC5834] hover:bg-[#a34a2a] text-white py-3 rounded-lg font-medium transition-colors mt-4">
+                                下一步
+                            </button>
+                        </div>
+                     </div>
+
+                     <!-- Step 2: Payment -->
+                     <div id="payment-step-payment" class="hidden h-full flex flex-col">
+                        <button onclick="setPaymentStep('form')" class="flex items-center text-sm text-gray-500 hover:text-[#BC5834] mb-4 transition-colors mt-8">
+                            <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> 返回修改
+                        </button>
+                        <h3 class="text-2xl font-bold text-[#222222] mb-6">支付订单</h3>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg space-y-3 mb-6 text-sm">
+                           <div class="flex justify-between"><span class="text-gray-500">联系人</span><span class="font-medium" id="confirm-name"></span></div>
+                           <div class="flex justify-between"><span class="text-gray-500">手机号</span><span class="font-medium" id="confirm-phone"></span></div>
+                           <div class="flex justify-between"><span class="text-gray-500">为谁写</span><span class="font-medium" id="confirm-usage"></span></div>
+                           <div class="border-t border-gray-200 pt-2 mt-2 hidden" id="confirm-notes-container">
+                               <span class="text-gray-500 block mb-1">备注</span>
+                               <span class="text-gray-700" id="confirm-notes"></span>
+                           </div>
+                        </div>
+
+                        <div class="flex-1 flex flex-col items-center justify-center p-6 border-2 border-[#BC5834] border-dashed rounded-xl bg-[#BC5834]/5 cursor-pointer hover:bg-[#BC5834]/10 transition-colors" onclick="handlePaymentSuccess()">
+                            <div class="bg-white p-2 rounded-lg shadow-sm mb-4">
+                                <i data-lucide="qr-code" class="w-32 h-32 text-gray-800"></i>
+                            </div>
+                            <p class="font-bold text-[#222222] mb-1">微信扫码支付</p>
+                            <p class="text-[#BC5834] font-bold text-xl">¥ 8,888</p>
+                            <p class="text-xs text-gray-400 mt-2">(点击二维码模拟支付成功)</p>
+                        </div>
+                     </div>
+                     
+                     <!-- Step 3: Success -->
+                     <div id="payment-step-success" class="hidden h-full flex flex-col items-center justify-center text-center">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="check" class="w-10 h-10 text-green-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[#222222] mb-4">预约成功</h3>
+                        <p class="text-gray-600 mb-8 max-w-xs">
+                            感谢您的信任！我们的传记顾问将在24小时内与您联系，请保持电话畅通。
+                        </p>
+                        <button onclick="closePaymentModal()" class="w-full bg-[#BC5834] hover:bg-[#a34a2a] text-white py-3 rounded-lg font-medium transition-colors">
+                            完成
+                        </button>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Globals ---
+        let currentUser = localStorage.getItem('biography_username');
+        let pendingPayment = false;
+        let isLoginMode = true;
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            updateAuthUI();
+            updateUsageUI(); // Init radio styles
+        });
+
+        // --- Navigation ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if(el) el.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- Auth Logic ---
+        function updateAuthUI() {
+            const desktopContainer = document.getElementById('auth-container-desktop');
+            const mobileContainer = document.getElementById('auth-container-mobile');
+            
+            if (currentUser) {
+                const html = `
+                    <div class="flex items-center gap-4">
+                        <span class="text-[#222222] font-medium flex items-center gap-2">
+                            <i data-lucide="user" class="w-5 h-5 text-[#BC5834]"></i>
+                            你好！${currentUser}
+                        </span>
+                        <button onclick="handleLogout()" class="text-xs text-gray-500 hover:text-[#BC5834] transition-colors px-2 py-1">退出</button>
+                    </div>
+                `;
+                desktopContainer.innerHTML = html;
+                mobileContainer.innerHTML = html.replace('gap-4', 'justify-between py-2').replace('text-xs', 'text-sm');
+            } else {
+                const html = `<button onclick="openLoginModal()" class="text-[#222222] hover:text-[#BC5834] transition-colors font-medium">登录 / 注册</button>`;
+                desktopContainer.innerHTML = html;
+                mobileContainer.innerHTML = `<button onclick="openLoginModal(); toggleMobileMenu()" class="text-[#222222] font-medium py-2 text-left w-full">登录 / 注册</button>`;
+            }
+            lucide.createIcons();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('biography_username');
+            currentUser = null;
+            updateAuthUI();
+        }
+
+        // --- Login Modal ---
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            // Animate In
+            const content = document.getElementById('login-modal-content');
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+            
+            // Auto fill if remembered
+            if(localStorage.getItem('biography_password')) {
+                document.getElementById('login-username').value = localStorage.getItem('biography_username') || '';
+                document.getElementById('login-password').value = localStorage.getItem('biography_password') || '';
+                document.getElementById('remember-me').checked = true;
+            }
+        }
+
+        function closeLoginModal() {
+            const content = document.getElementById('login-modal-content');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('login-modal').classList.add('hidden');
+            }, 300);
+        }
+
+        function toggleLoginMode(isLogin) {
+            isLoginMode = isLogin;
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const btn = document.getElementById('login-btn');
+            
+            if(isLogin) {
+                tabLogin.className = "text-xl font-bold transition-colors text-[#BC5834]";
+                tabRegister.className = "text-xl font-bold transition-colors text-gray-400 hover:text-gray-600";
+                btn.innerText = "登录";
+            } else {
+                tabLogin.className = "text-xl font-bold transition-colors text-gray-400 hover:text-gray-600";
+                tabRegister.className = "text-xl font-bold transition-colors text-[#BC5834]";
+                btn.innerText = "注册";
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const remember = document.getElementById('remember-me').checked;
+            const btn = document.getElementById('login-btn');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto"></i>`;
+            lucide.createIcons();
+
+            setTimeout(() => {
+                // Success
+                currentUser = username;
+                if(remember) {
+                    localStorage.setItem('biography_username', username);
+                    localStorage.setItem('biography_password', password);
+                } else {
+                    localStorage.removeItem('biography_password'); // Don't clear username if just logging in session
+                }
+
+                btn.classList.add('bg-green-600', 'hover:bg-green-700');
+                btn.innerHTML = `<div class="flex items-center justify-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5"></i> <span>${isLoginMode ? '登录成功' : '注册成功'}</span></div>`;
+                lucide.createIcons();
+
+                setTimeout(() => {
+                    closeLoginModal();
+                    updateAuthUI();
+                    btn.disabled = false;
+                    btn.innerText = isLoginMode ? '登录' : '注册';
+                    btn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    btn.classList.add('bg-[#BC5834]');
+                    
+                    if(pendingPayment) {
+                        pendingPayment = false;
+                        openPaymentModal();
+                    }
+                }, 800);
+            }, 1000);
+        }
+
+        // --- Booking Logic ---
+        function handleBookClick() {
+            if (currentUser) {
+                openPaymentModal();
+            } else {
+                pendingPayment = true;
+                openLoginModal();
+            }
+        }
+
+        // --- Payment Modal ---
+        function openPaymentModal() {
+            document.getElementById('payment-modal').classList.remove('hidden');
+            const content = document.getElementById('payment-modal-content');
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+            setPaymentStep('form');
+        }
+
+        function closePaymentModal() {
+            const content = document.getElementById('payment-modal-content');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('payment-modal').classList.add('hidden');
+                // Reset form
+                document.getElementById('book-name').value = '';
+                document.getElementById('book-phone').value = '';
+                document.getElementById('book-notes').value = '';
+                document.querySelector('input[name="usage"][value="self"]').checked = true;
+                updateUsageUI();
+            }, 300);
+        }
+
+        function updateUsageUI() {
+            const val = document.querySelector('input[name="usage"]:checked').value;
+            const labelSelf = document.getElementById('label-usage-self');
+            const labelGift = document.getElementById('label-usage-gift');
+            
+            const activeClass = "border-[#BC5834] bg-[#BC5834]/5 text-[#BC5834] font-medium";
+            const inactiveClass = "border-gray-200 text-gray-600 hover:bg-gray-50";
+            
+            if(val === 'self') {
+                labelSelf.className = "w-full p-3 border rounded-lg cursor-pointer transition-all flex items-center justify-center gap-2 text-center " + activeClass;
+                labelGift.className = "w-full p-3 border rounded-lg cursor-pointer transition-all flex items-center justify-center gap-2 text-center " + inactiveClass;
+            } else {
+                labelSelf.className = "w-full p-3 border rounded-lg cursor-pointer transition-all flex items-center justify-center gap-2 text-center " + inactiveClass;
+                labelGift.className = "w-full p-3 border rounded-lg cursor-pointer transition-all flex items-center justify-center gap-2 text-center " + activeClass;
+            }
+        }
+
+        function setPaymentStep(step) {
+            ['form', 'payment', 'success'].forEach(s => {
+                document.getElementById(`payment-step-${s}`).classList.add('hidden');
+            });
+            document.getElementById(`payment-step-${step}`).classList.remove('hidden');
+        }
+
+        function handlePaymentNext() {
+            const name = document.getElementById('book-name').value;
+            const phone = document.getElementById('book-phone').value;
+            const usage = document.querySelector('input[name="usage"]:checked').value;
+            const notes = document.getElementById('book-notes').value;
+
+            if(!name || !phone) {
+                alert("请填写必填项");
+                return;
+            }
+            if (!/^\d{11}$/.test(phone)) {
+                alert("请输入正确的11位手机号");
+                return;
+            }
+
+            // Set confirmation data
+            document.getElementById('confirm-name').innerText = name;
+            document.getElementById('confirm-phone').innerText = phone;
+            document.getElementById('confirm-usage').innerText = usage === 'self' ? '为自己' : '为父母/长辈/他人';
+            if(notes) {
+                document.getElementById('confirm-notes-container').classList.remove('hidden');
+                document.getElementById('confirm-notes').innerText = notes;
+            } else {
+                document.getElementById('confirm-notes-container').classList.add('hidden');
+            }
+
+            setPaymentStep('payment');
+        }
+
+        function handlePaymentSuccess() {
+            setPaymentStep('success');
+        }
+
+    </script>
+</body>
+</html>
