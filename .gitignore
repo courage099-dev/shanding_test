@@ -25,3 +25,10 @@ Thumbs.db
 dist/
 build/
 *.tsbuildinfo
+
+# SSH Keys (should never be committed)
+*.pub
+tiger798
+tiger798.pub
+id_*
+!*.pub.example
